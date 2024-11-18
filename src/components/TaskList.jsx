@@ -1,24 +1,26 @@
 import React from 'react'
 
-const TaskList = ({tasks, onDeleteTask}) => {
+const TaskList = ({tasks, onDeleteTask, isSearching}) => {
   return (
-    <section className='absolute w-full  flex justify-center items-center mt-[20rem]' >
-        <div className='bg-white p-2 rounded-lg shadow-lg w-[70%] '>
-            <h2 className='text-3xl font-semibold text-center text-gray-800 mb-6  '>Task Lists</h2>
+    <section className='absolute w-full  flex justify-center items-center mt-[22rem] ' >
+        <div className='bg-white p-2 rounded-lg shadow-md w-[40%]  '>
+            <h2 className='text-2xl font-bold text-center text-gray-800 mb-4  '>Task Lists</h2>
             {tasks.length === 0 ? (
-               
-                    <p className='text-center p-2'>No tasks available</p>
-                
-    
+                isSearching ? 
+                <p className='text-center p-2 text-gray-500'>No tasks available</p>
+                :
+                <p className='text-center p-2 text-gray-500'>No tasks found. Try adding one or clear your search.</p>    
             ) : (
-                <div>
-                <ul>
+                <div className='flex items-start justify-start m-10 max-w-full' >
+                <ul className=' list-disc w-full'>
                     {tasks.map( (task)=> (
-                        <li key={task.id}>
-                            <h3> {task.title} </h3>
-                            <p>{task.description}</p>
-                            <p>{task.priority}</p>
-                            <button onClick={()=> onDeleteTask(task.id)} >Delete</button>
+                        <li key={task.id} className='border-b border-gray-200 py-5 flex items-center justify-between'>  
+                        <div >
+                            <h3 className='font-medium text-lg text-gray-800 break-words'> {task.title}</h3>
+                            <p className='text-gray-600 break-words'>{task.description}</p>
+                            <p className='text-sm text-gray-500'>Priority: {task.priority}</p>   
+                            </div>                  
+                            <button className='text-white bg-black py-1 px-1 mt-2 rounded focus:outline-none border-none font-bold leading-normal font-sans' onClick={()=> onDeleteTask(task.id)} >Delete</button>
                         </li>
                     ))}
                 </ul>
