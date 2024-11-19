@@ -58,7 +58,6 @@ This will optimize the app for production.
 Here are some screenshots of the Task Manager application in action:
 
 ### Task Input UI
-![task](assets/screenshots/task-input.png)
 ![Task Input](/src/assets/screenshots/task-input.png)
 
 ### Task Completion Feature
