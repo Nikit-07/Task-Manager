@@ -5,8 +5,9 @@ import TaskSearch from './components/TaskSearch';
 
 const App = () => {
 
-  const[tasks, setTasks] = useState([]);
-  const[searchQuery, setSearchQuery]= useState('');
+  const [tasks, setTasks] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const[sortByPriority, setSortByPriority]=useState(false);
 
   // Retrive tasks from the local storage if task are saved otherwise retur empty array
   // Will only run on initial render or page reloads
@@ -48,17 +49,45 @@ const App = () => {
   }
 
   // handle search query
-  const handleSearchChange= (query)=>{
+  const handleSearchChange = (query) => {
     setSearchQuery(query);
   }
 
 
   // filtering the task based on search query
-  const filteredTask=
-  searchQuery.trim() === "" ? tasks : tasks.filter( (task)=>(
-    task.title.toLowerCase().includes(searchQuery.toLowerCase())
-  ) )
-console.log('filtered task is',filteredTask);
+  const filteredTask =
+    searchQuery.trim() === "" ? tasks : tasks.filter((task) => (
+      task.title.toLowerCase().includes(searchQuery.toLowerCase())
+    ))
+
+
+    
+    // priority array - assigned numerical values to each priority
+    const priorityOrder= { 'High': 1, 'Medium' : 2, 'Low': 3}
+
+    // sorting the array according to their Priority or completed/incomplete status
+
+    const sortedTasks= filteredTask.slice().sort( (a,b)=> {
+      if(a.completed !== b.completed){
+        return a.completed ? 1 : -1;
+      }
+      if(sortByPriority){
+        return priorityOrder[a.priority] - priorityOrder[b.priority];
+      }
+    } );
+
+
+
+  // for marking the tasks as completed or not
+  const toogleCompletion = (taskId) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>(
+        task.id === taskId ? { ...task, completed: !task.completed } : task
+      )
+      ));     
+  };
+
+  console.log('filtered task is', filteredTask);
 
 
 
@@ -80,14 +109,13 @@ console.log('filtered task is',filteredTask);
       </section>
 
       <section>
-        <TaskSearch onSearchChange={handleSearchChange}/>
+        <TaskSearch onSearchChange={handleSearchChange} sortByPriority={sortByPriority} setSortByPriority={setSortByPriority} />
       </section>
 
 
 
       <section>
-
-        <TaskList tasks={filteredTask} onDeleteTask={deleteTask} isSearching={searchQuery.trim()===""}/>
+        <TaskList tasks={sortedTasks} onDeleteTask={deleteTask} onToogle={toogleCompletion} isSearching={searchQuery.trim() === ""} />
 
       </section>
     </main>
