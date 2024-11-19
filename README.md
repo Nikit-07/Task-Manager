@@ -56,7 +56,7 @@ This will optimize the app for production.
 ## Screenshots
 
 Here are some screenshots of the Task Manager application in action:
-
+git 
 ### Task Input UI
 ![Task Input](/src/assets/screenshots/task-input.png)
 
